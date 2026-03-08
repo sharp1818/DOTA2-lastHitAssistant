@@ -10,8 +10,11 @@ train_results = model.train(
     data="dataset.yaml",
     epochs=100, 
     imgsz=640, 
-    device="gpu", 
+    device=device, 
+    batch=16,
+    workers=4,
 )
 
 metrics = model.val()
 path = model.export(format="onnx") 
+print(f"Modelo exportado en: {path}")
