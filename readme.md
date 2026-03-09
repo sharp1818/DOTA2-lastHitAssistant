@@ -3,9 +3,9 @@
 <img width="477" height="565" alt="381846533-5e2b5a4b-c951-44bc-81e8-24f3ea8d2141" src="https://github.com/user-attachments/assets/2999484a-88cf-4f61-8d92-e1719b077da2" />
 <img width="1004" height="851" alt="image" src="https://github.com/user-attachments/assets/0c4d4880-189e-4c7d-bdab-605298afbacd" />
 
-3. Video Card RTX 5060, si tienes otro modelo, instalar la versión de cuda compatible
-4. Python versión 3.14.3, yaque esa versión es compatible con pytorch para este proyecto
-5. Tener instalado miniconda
+2. Video Card RTX 5060, si tienes otro modelo, instalar la versión de cuda compatible
+3. Python versión 3.14.3, yaque esa versión es compatible con pytorch para este proyecto
+4. Tener instalado miniconda
    
 ## Instalación
 1. Clonar este repositorio con: git clone https://github.com/sharp1818/DOTA2-lastHitAssistant.git
@@ -21,14 +21,9 @@
 <img width="2400" height="1200" alt="results" src="https://github.com/user-attachments/assets/c78f0904-ae29-48e5-90a4-86890365b37b" />
 
 ## USO 
-1. Seleccionar el limite de umbral para denegar o lasthitear creeps
-   
+1. Seleccionar el limite de umbral para denegar o lasthitear creeps  
 <img width="352" height="407" alt="image" src="https://github.com/user-attachments/assets/71349e6a-2e4d-471e-8842-9064e19686ae" />
-
-
 2. Por defecto configuré la tecla "," para denegar y "." para atacar, pero puedes asignar otra tecla
-
 3. Divierteté!
-
 <img width="1264" height="745" alt="image" src="https://github.com/user-attachments/assets/c9b73e84-0f4c-4297-a463-67672951d839" />
 <img width="1270" height="749" alt="image" src="https://github.com/user-attachments/assets/e602be0d-7a6e-4e97-89b4-b750e108f23c" />
