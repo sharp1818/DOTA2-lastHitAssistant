@@ -201,6 +201,12 @@ def main():
                             cv2.putText(frame, f"{percentage}%", (x1, y1 - 10), 
                                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, color_ui, 2)
 
+            cv2.imshow("Dota 2 - RTX 5060 LastHitAssistant", cv2.resize(frame, (1280, 720)))
+            
+            # Mantener waitKey para que la ventana sea interactiva, pero sin forzar salida con 'q'
+            cv2.waitKey(1)
+
+    cv2.destroyAllWindows()
     print("Programa cerrado correctamente.")
 
 if __name__ == '__main__':
