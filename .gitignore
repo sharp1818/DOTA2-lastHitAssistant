@@ -1,1 +1,7 @@
 venv/
+runs/
+
+# DOWNLOADED MODELS YOLO
+yolo26*.pt
+yolo11*.pt
+yolov8*.pt
