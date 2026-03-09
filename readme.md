@@ -23,6 +23,7 @@
 ## USO 
 1. Seleccionar el limite de umbral para denegar o lasthitear creeps  
 <img width="352" height="407" alt="image" src="https://github.com/user-attachments/assets/71349e6a-2e4d-471e-8842-9064e19686ae" />
+
 2. Por defecto configuré la tecla "," para denegar y "." para atacar, pero puedes asignar otra tecla
 3. Divierteté!
 <img width="1264" height="745" alt="image" src="https://github.com/user-attachments/assets/c9b73e84-0f4c-4297-a463-67672951d839" />
