@@ -1,3 +1,4 @@
+import ctypes
 import cv2
 import numpy as np
 import tkinter as tk
@@ -5,19 +6,45 @@ from threading import Thread
 from mss import mss
 from ultralytics import YOLO
 from pynput import keyboard
+import serial
+import serial.tools.list_ports
 
-# --- VARIABLES GLOBALES ---
+arduino = None
 UMBRAL_ALIADO = 10
 UMBRAL_ENEMIGO = 10
 buscar_aliado = False
 buscar_enemigo = False
 is_running = True  # Nueva variable para controlar el bucle
 
+class POINT(ctypes.Structure):
+    _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
+
+def get_actual_mouse_pos():
+    pt = POINT()
+    ctypes.windll.user32.GetCursorPos(ctypes.byref(pt))
+    return pt.x, pt.y
+
+def detect_arduino_port():
+    arduino_ports = []
+    for port in serial.tools.list_ports.comports():
+        if 'Arduino' in port.manufacturer:
+            arduino_ports.append(port.device)
+    return arduino_ports
+
+def init_arduino():
+    arduino_ports = detect_arduino_port()
+    if arduino_ports:
+        port = arduino_ports[0]
+        return serial.Serial(port, 115200, timeout=0)
+    else:
+        print("No se detectaron puertos de Arduino. Verifica la conexión.")
+        return(arduino)
+
 def lanzar_ui():
     global UMBRAL_ALIADO, UMBRAL_ENEMIGO, is_running
     
     root = tk.Tk()
-    root.title("Dota 2 LastHitAssistant")
+    root.title("Dota 2 - LastHitAssistant")
     root.geometry("350x300")
     root.attributes("-topmost", True)
 
@@ -53,15 +80,18 @@ def on_press(key):
     try:
         if key.char == ',':
             buscar_aliado = True
-            print(">>> Buscando aliado para acción...")
+            print(">>> Buscando aliado para denegar...")
         elif key.char == '.':
             buscar_enemigo = True
-            print(">>> Buscando enemigo para acción...")
+            print(">>> Buscando enemigo para atacar...")
     except AttributeError:
         pass
 
 def main():
     global buscar_aliado, buscar_enemigo, UMBRAL_ALIADO, UMBRAL_ENEMIGO, is_running
+    arduino = init_arduino()
+    if not arduino:
+        return
 
     # Iniciar UI y Teclado
     Thread(target=lanzar_ui, daemon=True).start()
@@ -118,13 +148,21 @@ def main():
                             percentage = (pixeles_vida / ancho_real_barra) * 100
                             percentage = 100 if percentage > 95 else int(percentage)
 
-                            if buscar_aliado and cls == 0 and percentage < UMBRAL_ALIADO:
-                                print(f"¡ACCIÓN EJECUTADA! Aliado al {percentage}%")
-                                buscar_aliado = False 
+                            centro_x = x1 + (x2 - x1) // 2
+                            centro_y = y1 + (y2 - y1) // 2
+                            
+                            if (buscar_aliado and cls == 0 and percentage < UMBRAL_ALIADO) or (buscar_enemigo and cls != 0 and percentage < UMBRAL_ENEMIGO):
+                                pos_pre_x, pos_pre_y = get_actual_mouse_pos()
+                                moveX = (centro_x - pos_pre_x) + 8
+                                moveY = (centro_y - pos_pre_y) + 12
+                                arduino.write(f"{moveX} {moveY}\n".encode())
+                                
+                                tipo = "Aliado" if cls == 0 else "Enemigo"
+                                print(f"¡Atacar! {tipo} al {percentage}% | Mov: ({moveX}, {moveY})")
+                            
+                                buscar_aliado = False
+                                buscar_enemigo = False
 
-                            if buscar_enemigo and cls != 0 and percentage < UMBRAL_ENEMIGO:
-                                print(f"¡ACCIÓN EJECUTADA! Enemigo al {percentage}%")
-                                buscar_enemigo = False 
 
                             color_ui = (0, 255, 0) if cls == 0 else (0, 0, 255)
                             cv2.rectangle(frame, (x1, y1), (x2, y2), color_ui, 2)
