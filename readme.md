@@ -1,5 +1,6 @@
 ## Requisitos 
 1. Cargar mouse.ino en arduino Leonardo, USB HOST SHIELD (opcional)
+<img width="2400" height="1200" alt="results" src="https://github.com/user-attachments/assets/5e2b5a4b-c951-44bc-81e8-24f3ea8d2141" />
 ![image](https://github.com/user-attachments/assets/5e2b5a4b-c951-44bc-81e8-24f3ea8d2141)
 3. Video Card RTX 5060, si tienes otra modelo, instalar la versión de cuda compatible
 4. Python versión 3.14.3, yaque esa versión es compatible con pytorch para este proyecto
