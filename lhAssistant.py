@@ -12,6 +12,8 @@ import serial.tools.list_ports
 arduino = None
 UMBRAL_ALIADO = 10
 UMBRAL_ENEMIGO = 10
+TECLA_ALIADO = ','
+TECLA_ENEMIGO = '.'
 buscar_aliado = False
 buscar_enemigo = False
 is_running = True  # Nueva variable para controlar el bucle
@@ -41,11 +43,11 @@ def init_arduino():
         return(arduino)
 
 def lanzar_ui():
-    global UMBRAL_ALIADO, UMBRAL_ENEMIGO, is_running
+    global UMBRAL_ALIADO, UMBRAL_ENEMIGO, TECLA_ALIADO, TECLA_ENEMIGO, is_running
     
     root = tk.Tk()
     root.title("Dota 2 - LastHitAssistant")
-    root.geometry("350x300")
+    root.geometry("350x380")
     root.attributes("-topmost", True)
 
     def actualizar_valores(val):
@@ -53,37 +55,67 @@ def lanzar_ui():
         UMBRAL_ALIADO = slider_aliado.get()
         UMBRAL_ENEMIGO = slider_enemigo.get()
 
+    def actualizar_teclas():
+        global TECLA_ALIADO, TECLA_ENEMIGO
+        t_aliado = entry_aliado.get().strip()
+        t_enemigo = entry_enemigo.get().strip()
+        
+        if t_aliado: TECLA_ALIADO = t_aliado[0]
+        if t_enemigo: TECLA_ENEMIGO = t_enemigo[0]
+        
+        label_info_aliado.config(text=f"Umbral Aliado (Tecla: {TECLA_ALIADO})")
+        label_info_enemigo.config(text=f"Umbral Enemigo (Tecla: {TECLA_ENEMIGO})")
+        print(f"Configuración guardada: Aliado={TECLA_ALIADO}, Enemigo={TECLA_ENEMIGO}")
+
     def cerrar_programa():
         global is_running
         is_running = False
         root.destroy()
 
-    tk.Label(root, text="CONTROL DE UMBRAL VIDA", font=("Arial", 12, "bold")).pack(pady=10)
+    tk.Label(root, text="CONFIGURACIÓN ASISTENTE", font=("Arial", 12, "bold")).pack(pady=10)
 
-    tk.Label(root, text=f"Umbral Aliado (Tecla ,)").pack()
+    # --- ALIADO ---
+    label_info_aliado = tk.Label(root, text=f"Umbral Aliado (Tecla: {TECLA_ALIADO})")
+    label_info_aliado.pack() 
+    
     slider_aliado = tk.Scale(root, from_=0, to=100, orient="horizontal", command=actualizar_valores)
     slider_aliado.set(UMBRAL_ALIADO)
     slider_aliado.pack(fill="x", padx=20)
+    
+    entry_aliado = tk.Entry(root, width=5, justify='center')
+    entry_aliado.insert(0, TECLA_ALIADO)
+    entry_aliado.pack(pady=5)
 
-    tk.Label(root, text=f"Umbral Enemigo (Tecla .)").pack(pady=(10, 0))
+    # --- ENEMIGO ---
+    label_info_enemigo = tk.Label(root, text=f"Umbral Enemigo (Tecla: {TECLA_ENEMIGO})")
+    label_info_enemigo.pack(pady=(15, 0))
+    
     slider_enemigo = tk.Scale(root, from_=0, to=100, orient="horizontal", command=actualizar_valores)
     slider_enemigo.set(UMBRAL_ENEMIGO)
     slider_enemigo.pack(fill="x", padx=20)
+    
+    entry_enemigo = tk.Entry(root, width=5, justify='center')
+    entry_enemigo.insert(0, TECLA_ENEMIGO)
+    entry_enemigo.pack(pady=5)
 
-    # Botón para cerrar
-    tk.Button(root, text="CERRAR ASISTENTE", command=cerrar_programa, bg="red", fg="white", font=("Arial", 10, "bold")).pack(pady=30)
+    # --- BOTONES ---
+    tk.Button(root, text="ACTUALIZAR TECLAS", command=actualizar_teclas, 
+              bg="#4CAF50", fg="white", font=("Arial", 9, "bold")).pack(pady=20)
+
+    tk.Button(root, text="CERRAR ASISTENTE", command=cerrar_programa, 
+              bg="red", fg="white", font=("Arial", 10, "bold")).pack(pady=10)
     
     root.mainloop()
 
 def on_press(key):
-    global buscar_aliado, buscar_enemigo
+    global buscar_aliado, buscar_enemigo, TECLA_ALIADO, TECLA_ENEMIGO
     try:
-        if key.char == ',':
+        if key.char == TECLA_ALIADO:
             buscar_aliado = True
-            print(">>> Buscando aliado para denegar...")
-        elif key.char == '.':
+            print(f">>> Buscando aliado para denegar...")
+        elif key.char == TECLA_ENEMIGO:
             buscar_enemigo = True
-            print(">>> Buscando enemigo para atacar...")
+            print(f">>> Buscando enemigo para atacar...")
     except AttributeError:
         pass
 
