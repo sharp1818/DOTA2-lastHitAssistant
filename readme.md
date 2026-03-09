@@ -1,12 +1,15 @@
-# GPU
-RTX 5060
-# PYTHON VERSION
-3.14.3
-# CREATE PROJECT WITH
-python -m venv venv
-# OR 
-py -3.14 -m venv venv
-# ACTIVATE WITH
-venv/Scripts/activate
-# UPDATE requeriments.txt
-python -m pip freeze > requirements.txt
+## Requisitos 
+1. Cargar mouse.ino en arduino Leonardo, USB HOST SHIELD (opcional)
+![image](https://github.com/user-attachments/assets/5e2b5a4b-c951-44bc-81e8-24f3ea8d2141)
+2. Video Card RTX 5060, si tienes otra modelo, instalar la versión de cuda compatible
+3. Python versión 3.14.3, yaque esa versión es compatible con pytorch para este proyecto
+4. Tener instalado miniconda
+   
+## Instalación
+1. Activar virtual enviroment venv/Scripts/activate
+2. Instalar requirements.txt
+3. Ejecutar lhAssistant
+
+## Resultados
+1. Resultados de entramiento con YOLO26, Recomiento la versión yolo26s, ofrece mejor respuesta y precisión comparado con la versión yolo26n
+<img width="2400" height="1200" alt="results" src="https://github.com/user-attachments/assets/037f5953-40d1-4ff9-b432-de63648246d5" />
